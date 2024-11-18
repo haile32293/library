@@ -24,7 +24,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('caltalogue/', include('catalogues.urls'), name='home_page'),
+    path('catalogue/', include('catalogues.urls'), name='home_page'),
     path('',RedirectView.as_view(url = 'catalogue/'), name='home'),
 ]
 
