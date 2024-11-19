@@ -14,9 +14,6 @@ class Languege(models.Model):
     def __str__(self):
         return self.name
     
-    def get_absolute_url():
-
-        pass
 
 class Genre(models.Model):
     """Model representing a book genre."""
@@ -71,6 +68,21 @@ class Book(models.Model):
     def get_absolute_url(self):
         """Returns the URL to access a detail record for this book."""
         return reverse('book-detail', args=[str(self.id)])
+    def display_genre(self):
+        """Create a string for the Genre. This is required to display genre in Admin."""
+        return ', '.join(genre.name for genre in self.genre.all()[:3])
+    display_genre.short_description = 'Genre'
+    
+
+
+
+
+
+
+
+
+
+
 import uuid # Required for unique book instances
 
 class BookInstance(models.Model):
@@ -81,6 +93,7 @@ class BookInstance(models.Model):
     book = models.ForeignKey('Book', on_delete=models.RESTRICT, null=True)
     imprint = models.CharField(max_length=200)
     due_back = models.DateField(null=True, blank=True)
+    language = models.ForeignKey(Languege, max_length=200, help_text='language of the book instance', on_delete=models.PROTECT)
 
     LOAN_STATUS = (
         ('m', 'Maintenance'),
