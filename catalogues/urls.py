@@ -3,6 +3,6 @@ from .views import index
 from django.urls import path
 
 urlpatterns = [
-    path('', index, name = 'caltalogue'),
+    path('', index, name = 'index'),
 
 ]
