@@ -11,6 +11,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 
+
 </head>
 <body>
 
@@ -20,9 +21,31 @@
 
                 {% block sidebar %}
                 <ul class="sidebar-nav">
+                    {% if user.is_authenticated %}
+
+                    <li>
+                      Wellcome   {{ user.username }} -- {{ user.email }}
+
+                      <p><a href="{%url 'my-borrowed'%}">My borowed </a></p>
+
+
+                      <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        
+                        <input type="submit" value="logout">
+                        </form>
+            
+                    </li>
+                    
+                    {% else %}
+
+                    <a href="{% url 'login' %}?next{{request.path}}"> Login</a>
+
+                    {% endif %}
+                    
 
                     <li><a href="{% url 'home' %}">Home</a></li>
-                    <li><a href="{% url 'books' %}">Alxl books</a></li>
+                    <li><a href="{% url 'books' %}">All books</a></li>
                     <li><a href="">All authors</a></li>
                 </ul>
 

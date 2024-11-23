@@ -5,6 +5,8 @@ from django.urls import reverse # Used in get_absolute_url() to get URL for spec
 
 from django.db.models import UniqueConstraint # Constrains fields to unique values
 from django.db.models.functions import Lower # Returns lower cased value of field
+from django.conf import settings
+import datetime
 
 
 class Languege(models.Model):
@@ -75,14 +77,6 @@ class Book(models.Model):
     
 
 
-
-
-
-
-
-
-
-
 import uuid # Required for unique book instances
 
 class BookInstance(models.Model):
@@ -109,13 +103,24 @@ class BookInstance(models.Model):
         default='m',
         help_text='Book availability',
     )
+    borrower = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
 
-    class Meta:
-        ordering = ['due_back']
-
+    @property
+    def is_overdue(self):
+        return bool(self.due_back and datetime.date.today() > self.due_back)
+    
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.id} ({self.book.title})'
+
+    class Meta:
+        ordering = ['due_back']
+        permissions = (('can_mark_returned', 'they can mark returened'),)
+        
+        
+        
+
+
 class Author(models.Model):
     """Model representing an author."""
     first_name = models.CharField(max_length=100)

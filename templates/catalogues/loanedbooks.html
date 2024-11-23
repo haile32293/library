@@ -1,0 +1,25 @@
+{% extends 'catalogues/base.html' %}
+{% block content %}
+
+<h1> List of books in loan </h1>
+
+{% if books %}
+
+    {% for bookins in books %}
+    <ul>
+
+
+        <li>
+
+             <a href="{% url 'book-detail' bookins.book.id %}"> {{ bookins.book.title }}</a>  --  ({{ bookins.due_back}}) -  <span> Borrowed by {{ bookins.borrower }}</span>
+
+        </li>
+    </ul>
+
+    {% endfor %}
+       
+{% else %}
+<h3>There is no borrowed books </h3>
+{% endif %}
+
+{% endblock %}
